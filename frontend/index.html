@@ -1,0 +1,910 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>SG CUBE — Smart General Contextual Unified Brain Engine</title>
+    <meta name="description" content="SG CUBE: A futuristic AI assistant interface inspired by Jarvis. Control your system with voice commands, automation, and intelligent dashboards.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;900&family=Rajdhani:wght@300;400;500;600;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- Animated Background -->
+    <div class="bg-grid"></div>
+    <div class="bg-particles" id="particles"></div>
+    <div class="bg-radial-glow"></div>
+
+    <!-- ========== SCREEN: LOGIN ========== -->
+    <section class="screen active" id="screen-login">
+        <div class="login-wrapper">
+            <div class="logo-hex-frame" style="margin-top: 60px;">
+                <span class="logo-text">SG</span>
+            </div>
+            <h1 class="app-title" style="margin-bottom: 5px;">SG CUBE</h1>
+            <p class="app-subtitle" style="margin-bottom: 30px; text-align: center;">SYSTEM CLEARANCE REQUIRED</p>
+
+            <!-- Role Selector -->
+            <div class="role-selector" id="role-selector">
+                <button class="role-btn active" data-role="user" id="role-user-btn">
+                    <i class="fas fa-user"></i> User
+                </button>
+                <button class="role-btn" data-role="admin" id="role-admin-btn">
+                    <i class="fas fa-shield-halved"></i> Admin
+                </button>
+            </div>
+
+            <div class="auth-container">
+                <!-- Login Form -->
+                <form id="form-login" class="auth-form active">
+                    <div class="input-group">
+                        <i class="fas fa-user-tag input-icon"></i>
+                        <input type="text" id="login-username" placeholder="Username" required>
+                    </div>
+                    <div class="input-group">
+                        <i class="fas fa-lock input-icon"></i>
+                        <input type="password" id="login-password" placeholder="Password" required>
+                    </div>
+                    <button type="submit" class="auth-btn" id="login-submit-btn">Access System</button>
+                    <p class="auth-switch">Don't have an account? <a href="#" id="switch-to-register">Register</a></p>
+                </form>
+
+                <!-- Registration Form -->
+                <form id="form-register" class="auth-form">
+                    <div class="input-group">
+                        <i class="fas fa-user-tag input-icon"></i>
+                        <input type="text" id="reg-username" placeholder="Username" minlength="3" required>
+                    </div>
+                    <div class="input-group">
+                        <i class="fas fa-envelope input-icon"></i>
+                        <input type="email" id="reg-email" placeholder="Email Address" required>
+                    </div>
+                    <div class="input-group">
+                        <i class="fas fa-lock input-icon"></i>
+                        <input type="password" id="reg-password" placeholder="Password" minlength="4" required>
+                    </div>
+                    <div class="input-group">
+                        <i class="fas fa-lock input-icon"></i>
+                        <input type="password" id="reg-confirm" placeholder="Confirm Password" minlength="4" required>
+                    </div>
+                    <button type="submit" class="auth-btn" id="reg-submit-btn">Create Account</button>
+                    <p class="auth-switch">Already have an account? <a href="#" id="switch-to-login">Login</a></p>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- ========== SCREEN: HOME ========== -->
+    <section class="screen" id="screen-home">
+        <header class="top-bar">
+            <div class="top-bar-left">
+                <div class="status-dot online"></div>
+                <span class="status-label">ONLINE</span>
+            </div>
+            <div class="top-bar-center">
+                <span class="time-display" id="clock">12:00</span>
+            </div>
+            <div class="top-bar-right">
+                <i class="fas fa-wifi signal-icon"></i>
+                <i class="fas fa-battery-three-quarters battery-icon"></i>
+            </div>
+        </header>
+
+        <div class="home-content">
+            <div class="logo-section">
+                <div class="logo-hex-frame">
+                    <span class="logo-text">SG</span>
+                </div>
+                <h1 class="app-title">SG CUBE</h1>
+                <p class="app-subtitle">Smart General Contextual Unified Brain Engine</p>
+            </div>
+
+            <div class="mic-area">
+                <!-- Outer animated rings -->
+                <div class="ring ring-1"></div>
+                <div class="ring ring-2"></div>
+                <div class="ring ring-3"></div>
+                <div class="ring ring-4"></div>
+
+                <!-- Waveform canvas (visible when listening) -->
+                <canvas id="waveform-canvas" width="240" height="240"></canvas>
+
+                <!-- Microphone button -->
+                <button class="mic-btn" id="mic-btn" aria-label="Activate voice assistant">
+                    <div class="mic-btn-inner">
+                        <i class="fas fa-microphone mic-icon"></i>
+                        <div class="mic-pulse"></div>
+                    </div>
+                </button>
+            </div>
+
+            <div class="voice-output">
+                <div class="voice-command-label">VOICE COMMAND</div>
+                <p class="voice-command-text" id="voice-command">"Open Chrome and start coding setup"</p>
+                <div class="ai-response-label">SG CUBE RESPONSE</div>
+                <p class="ai-response-text" id="ai-response">Opening Chrome and initializing development environment...</p>
+            </div>
+
+            <div class="home-quick-stats">
+                <div class="quick-stat">
+                    <i class="fas fa-microchip"></i>
+                    <span>CPU 23%</span>
+                </div>
+                <div class="quick-stat">
+                    <i class="fas fa-memory"></i>
+                    <span>RAM 4.2G</span>
+                </div>
+                <div class="quick-stat">
+                    <i class="fas fa-bolt"></i>
+                    <span>87%</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ========== SCREEN: CHAT ========== -->
+    <section class="screen" id="screen-chat">
+        <header class="screen-header">
+            <div class="header-icon"><i class="fas fa-comments"></i></div>
+            <h2 class="header-title">AI CONVERSATION</h2>
+            <button class="header-action" aria-label="Clear chat" id="btn-clear-chat"><i class="fas fa-trash-alt"></i></button>
+        </header>
+
+        <div class="chat-container" id="chat-container">
+            <div class="chat-date-divider"><span>Today</span></div>
+
+            <div class="chat-bubble ai">
+                <div class="chat-avatar"><i class="fas fa-robot"></i></div>
+                <div class="chat-content">
+                    <p>Hello! I'm <strong>SG CUBE</strong>, your AI assistant. How can I help you today?</p>
+                    <span class="chat-time">10:30 AM</span>
+                </div>
+            </div>
+
+            <div class="chat-bubble user">
+                <div class="chat-content">
+                    <p>Can you check the system status and open VS Code?</p>
+                    <span class="chat-time">10:31 AM</span>
+                </div>
+            </div>
+
+            <div class="chat-bubble ai">
+                <div class="chat-avatar"><i class="fas fa-robot"></i></div>
+                <div class="chat-content">
+                    <p>System check complete ✅</p>
+                    <div class="chat-info-card">
+                        <div class="info-row"><span>CPU</span><span class="cyan">23%</span></div>
+                        <div class="info-row"><span>Memory</span><span class="cyan">4.2 GB / 16 GB</span></div>
+                        <div class="info-row"><span>Battery</span><span class="green">87%</span></div>
+                        <div class="info-row"><span>Network</span><span class="green">Connected</span></div>
+                    </div>
+                    <p>VS Code has been launched successfully. 🚀</p>
+                    <span class="chat-time">10:31 AM</span>
+                </div>
+            </div>
+
+            <div class="chat-bubble user">
+                <div class="chat-content">
+                    <p>Great! Now start the coding setup workflow.</p>
+                    <span class="chat-time">10:32 AM</span>
+                </div>
+            </div>
+
+            <div class="chat-bubble ai">
+                <div class="chat-avatar"><i class="fas fa-robot"></i></div>
+                <div class="chat-content">
+                    <p>Executing <strong>Coding Setup</strong> workflow:</p>
+                    <div class="chat-steps">
+                        <div class="step done"><i class="fas fa-check-circle"></i> Opened VS Code</div>
+                        <div class="step done"><i class="fas fa-check-circle"></i> Launched Terminal</div>
+                        <div class="step done"><i class="fas fa-check-circle"></i> Started Dev Server</div>
+                        <div class="step done"><i class="fas fa-check-circle"></i> Opened Chrome DevTools</div>
+                    </div>
+                    <p>All set! Your coding environment is ready. 💻</p>
+                    <span class="chat-time">10:32 AM</span>
+                </div>
+            </div>
+
+            <div class="chat-bubble user">
+                <div class="chat-content">
+                    <p>Summarize what we discussed today</p>
+                    <span class="chat-time">10:45 AM</span>
+                </div>
+            </div>
+
+            <div class="chat-bubble ai">
+                <div class="chat-avatar"><i class="fas fa-robot"></i></div>
+                <div class="chat-content">
+                    <p>📋 <strong>Session Summary:</strong></p>
+                    <p>1. Performed system status check — all systems nominal<br>
+                       2. Launched VS Code editor<br>
+                       3. Executed full Coding Setup workflow (4 steps)<br>
+                       4. Development environment is active and ready</p>
+                    <span class="chat-time">10:45 AM</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="chat-input-area">
+            <button class="chat-attach-btn" aria-label="Attach file"><i class="fas fa-paperclip"></i></button>
+            <input type="text" class="chat-input" placeholder="Type a message..." id="chat-input">
+            <button class="chat-mic-btn" aria-label="Voice input"><i class="fas fa-microphone"></i></button>
+            <button class="chat-send-btn" aria-label="Send message" id="chat-send"><i class="fas fa-paper-plane"></i></button>
+        </div>
+    </section>
+
+    <!-- ========== SCREEN: AUTOMATION ========== -->
+    <section class="screen" id="screen-automation">
+        <header class="screen-header">
+            <div class="header-icon"><i class="fas fa-wand-magic-sparkles"></i></div>
+            <h2 class="header-title">AUTOMATION</h2>
+            <button class="header-action" aria-label="Add automation"><i class="fas fa-plus"></i></button>
+        </header>
+
+        <div class="automation-content">
+            <div class="auto-section-label">QUICK COMMANDS</div>
+            <div class="auto-grid">
+                <button class="auto-card" data-command="open-chrome">
+                    <div class="auto-card-glow"></div>
+                    <div class="auto-card-icon"><i class="fab fa-chrome"></i></div>
+                    <span class="auto-card-label">Open Chrome</span>
+                    <span class="auto-card-sub">Launch Browser</span>
+                </button>
+                <button class="auto-card" data-command="coding-setup">
+                    <div class="auto-card-glow"></div>
+                    <div class="auto-card-icon"><i class="fas fa-code"></i></div>
+                    <span class="auto-card-label">Coding Setup</span>
+                    <span class="auto-card-sub">IDE + Terminal</span>
+                </button>
+                <button class="auto-card" data-command="study-mode">
+                    <div class="auto-card-glow"></div>
+                    <div class="auto-card-icon"><i class="fas fa-book-open"></i></div>
+                    <span class="auto-card-label">Study Mode</span>
+                    <span class="auto-card-sub">Focus Environment</span>
+                </button>
+                <button class="auto-card" data-command="shutdown">
+                    <div class="auto-card-glow"></div>
+                    <div class="auto-card-icon"><i class="fas fa-power-off"></i></div>
+                    <span class="auto-card-label">Shutdown</span>
+                    <span class="auto-card-sub">Power Off Laptop</span>
+                </button>
+            </div>
+
+            <div class="auto-section-label">WORKFLOWS</div>
+            <div class="auto-list">
+                <button class="auto-list-item" data-workflow="dev_server">
+                    <div class="auto-list-icon"><i class="fas fa-terminal"></i></div>
+                    <div class="auto-list-info">
+                        <span class="auto-list-name">Launch Dev Server</span>
+                        <span class="auto-list-desc">npm run dev on project directory</span>
+                    </div>
+                    <div class="auto-list-arrow"><i class="fas fa-play"></i></div>
+                </button>
+                <button class="auto-list-item" data-workflow="database">
+                    <div class="auto-list-icon"><i class="fas fa-database"></i></div>
+                    <div class="auto-list-info">
+                        <span class="auto-list-name">Start Database</span>
+                        <span class="auto-list-desc">MongoDB + Redis services</span>
+                    </div>
+                    <div class="auto-list-arrow"><i class="fas fa-play"></i></div>
+                </button>
+                <button class="auto-list-item" data-workflow="deploy">
+                    <div class="auto-list-icon"><i class="fas fa-cloud-arrow-up"></i></div>
+                    <div class="auto-list-info">
+                        <span class="auto-list-name">Deploy to Production</span>
+                        <span class="auto-list-desc">Build & push to server</span>
+                    </div>
+                    <div class="auto-list-arrow"><i class="fas fa-play"></i></div>
+                </button>
+                <button class="auto-list-item" data-workflow="security">
+                    <div class="auto-list-icon"><i class="fas fa-shield-halved"></i></div>
+                    <div class="auto-list-info">
+                        <span class="auto-list-name">Security Scan</span>
+                        <span class="auto-list-desc">Run vulnerability check</span>
+                    </div>
+                    <div class="auto-list-arrow"><i class="fas fa-play"></i></div>
+                </button>
+                <button class="auto-list-item" data-workflow="backup">
+                    <div class="auto-list-icon"><i class="fas fa-file-zipper"></i></div>
+                    <div class="auto-list-info">
+                        <span class="auto-list-name">Backup Files</span>
+                        <span class="auto-list-desc">Compress & backup workspace</span>
+                    </div>
+                    <div class="auto-list-arrow"><i class="fas fa-play"></i></div>
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- ========== SCREEN: SYSTEM CONTROL ========== -->
+    <section class="screen" id="screen-system">
+        <header class="screen-header">
+            <div class="header-icon"><i class="fas fa-gauge-high"></i></div>
+            <h2 class="header-title">SYSTEM CONTROL</h2>
+            <button class="header-action" aria-label="Refresh"><i class="fas fa-arrows-rotate"></i></button>
+        </header>
+
+        <div class="system-content">
+            <div class="sys-gauges">
+                <div class="sys-gauge" data-value="23" data-label="CPU">
+                    <svg viewBox="0 0 120 120" class="gauge-svg">
+                        <circle cx="60" cy="60" r="52" class="gauge-bg"/>
+                        <circle cx="60" cy="60" r="52" class="gauge-fill" id="gauge-cpu"/>
+                    </svg>
+                    <div class="gauge-info">
+                        <span class="gauge-value" id="gauge-cpu-val">23%</span>
+                        <span class="gauge-label">CPU</span>
+                    </div>
+                </div>
+                <div class="sys-gauge" data-value="62" data-label="RAM">
+                    <svg viewBox="0 0 120 120" class="gauge-svg">
+                        <circle cx="60" cy="60" r="52" class="gauge-bg"/>
+                        <circle cx="60" cy="60" r="52" class="gauge-fill" id="gauge-ram"/>
+                    </svg>
+                    <div class="gauge-info">
+                        <span class="gauge-value" id="gauge-ram-val">62%</span>
+                        <span class="gauge-label">RAM</span>
+                    </div>
+                </div>
+                <div class="sys-gauge" data-value="87" data-label="BATTERY">
+                    <svg viewBox="0 0 120 120" class="gauge-svg">
+                        <circle cx="60" cy="60" r="52" class="gauge-bg"/>
+                        <circle cx="60" cy="60" r="52" class="gauge-fill green" id="gauge-bat"/>
+                    </svg>
+                    <div class="gauge-info">
+                        <span class="gauge-value" id="gauge-bat-val">87%</span>
+                        <span class="gauge-label">BATTERY</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="sys-info-cards">
+                <div class="sys-info-card">
+                    <div class="sys-card-header">
+                        <i class="fas fa-network-wired"></i>
+                        <span>NETWORK</span>
+                    </div>
+                    <div class="sys-card-body">
+                        <div class="sys-row"><span>Status</span><span class="val green"><i class="fas fa-circle"></i> Connected</span></div>
+                        <div class="sys-row"><span>WiFi</span><span class="val">HomeNetwork_5G</span></div>
+                        <div class="sys-row"><span>IP Address</span><span class="val">192.168.1.105</span></div>
+                        <div class="sys-row"><span>Speed</span><span class="val">120 Mbps</span></div>
+                    </div>
+                </div>
+
+                <div class="sys-info-card">
+                    <div class="sys-card-header">
+                        <i class="fas fa-hard-drive"></i>
+                        <span>STORAGE</span>
+                    </div>
+                    <div class="sys-card-body">
+                        <div class="sys-row"><span>Disk C:</span><span class="val">186 GB / 512 GB</span></div>
+                        <div class="storage-bar"><div class="storage-fill" style="width:36%"></div></div>
+                        <div class="sys-row"><span>Disk D:</span><span class="val">420 GB / 1 TB</span></div>
+                        <div class="storage-bar"><div class="storage-fill" style="width:42%"></div></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="auto-section-label">QUICK ACTIONS</div>
+            <div class="sys-actions">
+                <button class="sys-action-btn" data-action="file_manager">
+                    <i class="fas fa-folder-open"></i>
+                    <span>File Manager</span>
+                </button>
+                <button class="sys-action-btn" data-action="terminal">
+                    <i class="fas fa-terminal"></i>
+                    <span>Terminal</span>
+                </button>
+                <button class="sys-action-btn" data-action="task_manager">
+                    <i class="fas fa-display"></i>
+                    <span>Task Manager</span>
+                </button>
+                <button class="sys-action-btn" data-action="run_script">
+                    <i class="fas fa-scroll"></i>
+                    <span>Run Script</span>
+                </button>
+                <button class="sys-action-btn" data-action="control_panel">
+                    <i class="fas fa-sliders"></i>
+                    <span>Control Panel</span>
+                </button>
+                <button class="sys-action-btn" data-action="network">
+                    <i class="fas fa-wifi"></i>
+                    <span>Network</span>
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- ========== SCREEN: SETTINGS ========== -->
+    <section class="screen" id="screen-settings">
+        <header class="screen-header">
+            <div class="header-icon"><i class="fas fa-gear"></i></div>
+            <h2 class="header-title">SETTINGS</h2>
+            <button class="header-action" aria-label="Info" id="btn-open-info"><i class="fas fa-circle-info"></i></button>
+        </header>
+
+        <div class="settings-content">
+            <div class="settings-group">
+                <div class="settings-group-label">SERVER CONNECTION</div>
+                <div class="setting-item">
+                    <label class="setting-label" for="server-ip">Server IP Address</label>
+                    <input type="text" class="setting-input" id="server-ip" value="192.168.1.100" placeholder="e.g. 192.168.1.100">
+                </div>
+                <div class="setting-item">
+                    <label class="setting-label" for="server-port">Port Number</label>
+                    <input type="number" class="setting-input" id="server-port" value="5000" placeholder="e.g. 5000">
+                </div>
+                <div class="setting-item row">
+                    <div>
+                        <span class="setting-label">Connection Status</span>
+                        <span class="setting-status connected" id="conn-status"><i class="fas fa-circle"></i> Connected</span>
+                    </div>
+                    <button class="setting-test-btn" id="test-connection">
+                        <i class="fas fa-satellite-dish"></i> Test
+                    </button>
+                </div>
+            </div>
+
+            <div class="settings-group">
+                <div class="settings-group-label">VOICE ASSISTANT</div>
+                <div class="setting-item row">
+                    <div>
+                        <span class="setting-label">Voice Recognition</span>
+                        <span class="setting-desc">Enable speech-to-text input</span>
+                    </div>
+                    <label class="toggle-switch">
+                        <input type="checkbox" checked id="voice-toggle">
+                        <span class="toggle-slider"></span>
+                    </label>
+                </div>
+                <div class="setting-item row">
+                    <div>
+                        <span class="setting-label">Voice Response</span>
+                        <span class="setting-desc">AI speaks responses aloud</span>
+                    </div>
+                    <label class="toggle-switch">
+                        <input type="checkbox" checked id="tts-toggle">
+                        <span class="toggle-slider"></span>
+                    </label>
+                </div>
+                <div class="setting-item">
+                    <label class="setting-label" for="wake-word">Wake Word</label>
+                    <input type="text" class="setting-input" id="wake-word" value="Hey CUBE" placeholder="e.g. Hey CUBE">
+                </div>
+                <div class="setting-item">
+                    <label class="setting-label" for="voice-lang">Language</label>
+                    <select class="setting-select" id="voice-lang">
+                        <option value="en-US" selected>English (US)</option>
+                        <option value="en-GB">English (UK)</option>
+                        <option value="hi-IN">Hindi</option>
+                        <option value="ta-IN">Tamil</option>
+                    </select>
+                </div>
+                <div class="setting-item">
+                    <label class="setting-label" for="tts-voice">Voice</label>
+                    <select class="setting-select" id="tts-voice">
+                        <option value="">Loading voices...</option>
+                    </select>
+                </div>
+                <div class="setting-item">
+                    <label class="setting-label" for="tts-rate">Speech Rate</label>
+                    <div class="slider-row">
+                        <input type="range" class="setting-slider" id="tts-rate" min="0.5" max="2" step="0.1" value="1">
+                        <span class="slider-value" id="tts-rate-val">1.0x</span>
+                    </div>
+                </div>
+                <div class="setting-item">
+                    <label class="setting-label" for="tts-pitch">Pitch</label>
+                    <div class="slider-row">
+                        <input type="range" class="setting-slider" id="tts-pitch" min="0.5" max="2" step="0.1" value="1">
+                        <span class="slider-value" id="tts-pitch-val">1.0</span>
+                    </div>
+                </div>
+                <div class="setting-item row">
+                    <div>
+                        <span class="setting-label">Test Voice</span>
+                        <span class="setting-desc">Preview current voice settings</span>
+                    </div>
+                    <button class="setting-test-btn" id="btn-test-voice">
+                        <i class="fas fa-volume-high"></i> Test
+                    </button>
+                </div>
+            </div>
+
+            <div class="settings-group">
+                <div class="settings-group-label">AI ENGINE</div>
+                <div class="setting-item row">
+                    <div>
+                        <span class="setting-label">Ollama Status</span>
+                        <span class="setting-desc" id="ollama-status-text">Checking...</span>
+                    </div>
+                    <span class="setting-status" id="ollama-status-dot">
+                        <i class="fas fa-circle"></i> Offline
+                    </span>
+                </div>
+                <div class="setting-item">
+                    <label class="setting-label" for="ollama-model-select">Active Model</label>
+                    <select class="setting-select" id="ollama-model-select">
+                        <option value="">No models found</option>
+                    </select>
+                </div>
+                <div class="setting-item row">
+                    <div>
+                        <span class="setting-label">Fallback</span>
+                        <span class="setting-desc">Gemini API (Online)</span>
+                    </div>
+                    <span class="setting-status connected"><i class="fas fa-circle"></i> Ready</span>
+                </div>
+            </div>
+
+            <div class="settings-group">
+                <div class="settings-group-label">APPEARANCE</div>
+                <div class="setting-item row">
+                    <div>
+                        <span class="setting-label">Animations</span>
+                        <span class="setting-desc">UI motion effects</span>
+                    </div>
+                    <label class="toggle-switch">
+                        <input type="checkbox" checked id="anim-toggle">
+                        <span class="toggle-slider"></span>
+                    </label>
+                </div>
+                <div class="setting-item row">
+                    <div>
+                        <span class="setting-label">Haptic Feedback</span>
+                        <span class="setting-desc">Vibration on interactions</span>
+                    </div>
+                    <label class="toggle-switch">
+                        <input type="checkbox" checked id="haptic-toggle">
+                        <span class="toggle-slider"></span>
+                    </label>
+                </div>
+            </div>
+
+            <div class="settings-group">
+                <div class="settings-group-label">ABOUT</div>
+                <div class="about-card">
+                    <div class="about-logo">SG</div>
+                    <div class="about-info">
+                        <span class="about-name">SG CUBE</span>
+                        <span class="about-version">Version 1.0.0 — Jarvis Edition</span>
+                        <span class="about-copy">© 2026 SG Cube Project</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ========== SCREEN: INFO ========== -->
+    <section class="screen" id="screen-info">
+        <header class="screen-header">
+            <div class="header-icon"><i class="fas fa-circle-info"></i></div>
+            <h2 class="header-title">SYSTEM INFO</h2>
+            <button class="header-action" aria-label="Back" id="btn-close-info"><i class="fas fa-arrow-left"></i></button>
+        </header>
+
+        <div class="info-content" style="padding: 20px; padding-bottom: 40px; display: flex; flex-direction: column; align-items: center;">
+            <div class="cards-container">
+                <div class="feature-card">
+                    <div class="card-content">
+                        <i class="fas fa-brain card-icon"></i>
+                        <h2 class="card-title">Cognitive Core</h2>
+                        <p class="card-desc">Advanced natural language processing capabilities allowing fluid, context-aware conversations and intelligent task execution.</p>
+                    </div>
+                </div>
+
+                <div class="feature-card">
+                    <div class="card-content">
+                        <i class="fas fa-network-wired card-icon"></i>
+                        <h2 class="card-title">System Integration</h2>
+                        <p class="card-desc">Deep hooks into the host operating system providing real-time telemetry, resource monitoring, and direct file manipulation.</p>
+                    </div>
+                </div>
+
+                <div class="feature-card">
+                    <div class="card-content">
+                        <i class="fas fa-bolt card-icon"></i>
+                        <h2 class="card-title">Automated Workflows</h2>
+                        <p class="card-desc">Programmable macro sequences that chain complex actions together, reducing developmental friction and accelerating setup times.</p>
+                    </div>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="card-content">
+                        <i class="fas fa-microphone-lines card-icon"></i>
+                        <h2 class="card-title">Speech Recognition</h2>
+                        <p class="card-desc">Seamless voice-to-text integration with near real-time feedback, supporting natural voice interaction and text dictation.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="tech-stack">
+                <div class="tech-title">POWERED BY</div>
+                <div class="marquee">
+                    <div class="tech-item"><i class="fab fa-html5"></i> HTML5</div>
+                    <div class="tech-item"><i class="fab fa-css3-alt"></i> CSS3</div>
+                    <div class="tech-item"><i class="fab fa-js"></i> JavaScript</div>
+                    <div class="tech-item"><i class="fab fa-python"></i> Python</div>
+                    <div class="tech-item"><i class="fas fa-server"></i> REST API</div>
+                    
+                    <div class="tech-item"><i class="fab fa-html5"></i> HTML5</div>
+                    <div class="tech-item"><i class="fab fa-css3-alt"></i> CSS3</div>
+                    <div class="tech-item"><i class="fab fa-js"></i> JavaScript</div>
+                    <div class="tech-item"><i class="fab fa-python"></i> Python</div>
+                    <div class="tech-item"><i class="fas fa-server"></i> REST API</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ========== SCREEN: ADMIN PANEL ========== -->
+    <section class="screen" id="screen-admin">
+        <header class="screen-header">
+            <div class="header-icon"><i class="fas fa-shield-halved"></i></div>
+            <h2 class="header-title">ADMIN PANEL</h2>
+            <button class="header-action" id="admin-logout-btn" aria-label="Logout"><i class="fas fa-right-from-bracket"></i></button>
+        </header>
+
+        <!-- Admin Tabs -->
+        <div class="admin-tabs">
+            <button class="admin-tab active" data-tab="tab-dashboard"><i class="fas fa-chart-pie"></i> Dashboard</button>
+            <button class="admin-tab" data-tab="tab-users"><i class="fas fa-users"></i> Users</button>
+            <button class="admin-tab" data-tab="tab-model"><i class="fas fa-brain"></i> AI Model</button>
+            <button class="admin-tab" data-tab="tab-features"><i class="fas fa-sliders"></i> Features</button>
+            <button class="admin-tab" data-tab="tab-logs"><i class="fas fa-scroll"></i> Logs</button>
+            <button class="admin-tab" data-tab="tab-security"><i class="fas fa-lock"></i> Security</button>
+        </div>
+
+        <div class="admin-content">
+            <!-- Dashboard Tab -->
+            <div class="admin-tab-content active" id="tab-dashboard">
+                <div class="admin-stats-grid">
+                    <div class="admin-stat-card">
+                        <i class="fas fa-users"></i>
+                        <span class="stat-value" id="stat-total-users">0</span>
+                        <span class="stat-label">Total Users</span>
+                    </div>
+                    <div class="admin-stat-card">
+                        <i class="fas fa-user-shield"></i>
+                        <span class="stat-value" id="stat-total-admins">0</span>
+                        <span class="stat-label">Admins</span>
+                    </div>
+                    <div class="admin-stat-card">
+                        <i class="fas fa-server"></i>
+                        <span class="stat-value" id="stat-total-requests">0</span>
+                        <span class="stat-label">API Requests</span>
+                    </div>
+                    <div class="admin-stat-card error">
+                        <i class="fas fa-bug"></i>
+                        <span class="stat-value" id="stat-total-errors">0</span>
+                        <span class="stat-label">Errors</span>
+                    </div>
+                </div>
+                <div class="admin-section-title">System Status</div>
+                <div class="admin-sys-info">
+                    <div class="sys-row"><span>Platform</span><span class="val" id="admin-platform">—</span></div>
+                    <div class="sys-row"><span>CPU Usage</span><span class="val" id="admin-cpu">—</span></div>
+                    <div class="sys-row"><span>RAM Usage</span><span class="val" id="admin-ram">—</span></div>
+                    <div class="sys-row"><span>Battery</span><span class="val" id="admin-battery">—</span></div>
+                </div>
+            </div>
+
+            <!-- Users Tab -->
+            <div class="admin-tab-content" id="tab-users">
+                <div class="admin-section-title">User Management</div>
+                <div class="admin-users-table-wrap">
+                    <table class="admin-users-table" id="admin-users-table">
+                        <thead>
+                            <tr><th>ID</th><th>Username</th><th>Email</th><th>Role</th><th>Status</th><th>Action</th></tr>
+                        </thead>
+                        <tbody id="admin-users-tbody"></tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- AI Model Tab -->
+            <div class="admin-tab-content" id="tab-model">
+                <div class="admin-section-title">AI Model Control</div>
+                <div class="admin-model-grid">
+                    <div class="model-option">
+                        <span class="model-label">Model Mode</span>
+                        <div class="model-toggle-group">
+                            <button class="model-toggle-btn active" data-mode="online">Online (API)</button>
+                            <button class="model-toggle-btn" data-mode="offline">Offline (Ollama)</button>
+                        </div>
+                    </div>
+                    <div class="model-option">
+                        <span class="model-label">Temperature</span>
+                        <input type="range" min="0" max="100" value="70" class="model-slider" id="model-temp">
+                        <span class="model-slider-val" id="model-temp-val">0.7</span>
+                    </div>
+                    <div class="model-option">
+                        <span class="model-label">Max Response Length</span>
+                        <input type="range" min="50" max="2000" value="500" step="50" class="model-slider" id="model-length">
+                        <span class="model-slider-val" id="model-length-val">500</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Features Tab -->
+            <div class="admin-tab-content" id="tab-features">
+                <div class="admin-section-title">Feature Control Panel</div>
+                <div class="admin-feature-list">
+                    <div class="admin-feature-item">
+                        <div><span class="setting-label">Voice Mode</span><span class="setting-desc">Speech recognition & TTS</span></div>
+                        <label class="toggle-switch"><input type="checkbox" checked id="feat-voice"><span class="toggle-slider"></span></label>
+                    </div>
+                    <div class="admin-feature-item">
+                        <div><span class="setting-label">Vision AI</span><span class="setting-desc">Camera & image analysis</span></div>
+                        <label class="toggle-switch"><input type="checkbox" checked id="feat-vision"><span class="toggle-slider"></span></label>
+                    </div>
+                    <div class="admin-feature-item">
+                        <div><span class="setting-label">Automation</span><span class="setting-desc">Task automation features</span></div>
+                        <label class="toggle-switch"><input type="checkbox" checked id="feat-automation"><span class="toggle-slider"></span></label>
+                    </div>
+                    <div class="admin-feature-item">
+                        <div><span class="setting-label">Code Generator</span><span class="setting-desc">AI code generation tool</span></div>
+                        <label class="toggle-switch"><input type="checkbox" checked id="feat-codegen"><span class="toggle-slider"></span></label>
+                    </div>
+                    <div class="admin-feature-item">
+                        <div><span class="setting-label">Summarizer</span><span class="setting-desc">Text summarization tool</span></div>
+                        <label class="toggle-switch"><input type="checkbox" checked id="feat-summarizer"><span class="toggle-slider"></span></label>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Logs Tab -->
+            <div class="admin-tab-content" id="tab-logs">
+                <div class="admin-section-title">Request Logs <button class="admin-refresh-btn" id="refresh-logs-btn"><i class="fas fa-arrows-rotate"></i></button></div>
+                <div class="admin-logs-wrap">
+                    <table class="admin-logs-table">
+                        <thead><tr><th>Endpoint</th><th>Method</th><th>Status</th><th>IP</th><th>Time</th></tr></thead>
+                        <tbody id="admin-logs-tbody"></tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Security Tab -->
+            <div class="admin-tab-content" id="tab-security">
+                <div class="admin-section-title">Security Controls</div>
+                <div class="admin-feature-list">
+                    <div class="admin-feature-item">
+                        <div><span class="setting-label">API Key</span><span class="setting-desc">Current Gemini API key</span></div>
+                        <span class="api-key-display" id="api-key-display">••••••••</span>
+                    </div>
+                    <div class="admin-feature-item">
+                        <div><span class="setting-label">Rate Limiting</span><span class="setting-desc">Max requests per minute</span></div>
+                        <input type="number" class="setting-input" value="60" id="rate-limit-input" style="width:80px;">
+                    </div>
+                    <div class="admin-feature-item">
+                        <div><span class="setting-label">Access Control</span><span class="setting-desc">Require login for API</span></div>
+                        <label class="toggle-switch"><input type="checkbox" checked id="feat-access-control"><span class="toggle-slider"></span></label>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ========== SCREEN: AI TOOLS ========== -->
+    <section class="screen" id="screen-tools">
+        <header class="screen-header">
+            <div class="header-icon"><i class="fas fa-wand-magic-sparkles"></i></div>
+            <h2 class="header-title">AI TOOLS</h2>
+        </header>
+        <div class="tools-content">
+            <div class="tools-grid">
+                <button class="tool-card" data-tool="chatbot">
+                    <div class="tool-card-glow"></div>
+                    <div class="tool-card-icon"><i class="fas fa-comments"></i></div>
+                    <span class="tool-card-label">Chatbot</span>
+                    <span class="tool-card-sub">AI Conversations</span>
+                </button>
+                <button class="tool-card" data-tool="codegen">
+                    <div class="tool-card-glow"></div>
+                    <div class="tool-card-icon"><i class="fas fa-code"></i></div>
+                    <span class="tool-card-label">Code Generator</span>
+                    <span class="tool-card-sub">Generate Code</span>
+                </button>
+                <button class="tool-card" data-tool="summarizer">
+                    <div class="tool-card-glow"></div>
+                    <div class="tool-card-icon"><i class="fas fa-align-left"></i></div>
+                    <span class="tool-card-label">Summarizer</span>
+                    <span class="tool-card-sub">Summarize Text</span>
+                </button>
+                <button class="tool-card" data-tool="resume">
+                    <div class="tool-card-glow"></div>
+                    <div class="tool-card-icon"><i class="fas fa-file-lines"></i></div>
+                    <span class="tool-card-label">Resume Builder</span>
+                    <span class="tool-card-sub">Build Resume</span>
+                </button>
+                <button class="tool-card" data-tool="notes">
+                    <div class="tool-card-glow"></div>
+                    <div class="tool-card-icon"><i class="fas fa-sticky-note"></i></div>
+                    <span class="tool-card-label">Notes</span>
+                    <span class="tool-card-sub">Organize Notes</span>
+                </button>
+                <button class="tool-card" data-tool="vision">
+                    <div class="tool-card-glow"></div>
+                    <div class="tool-card-icon"><i class="fas fa-eye"></i></div>
+                    <span class="tool-card-label">Vision AI</span>
+                    <span class="tool-card-sub">Image Analysis</span>
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- ========== BOTTOM NAVIGATION (User) ========== -->
+    <nav class="bottom-nav" id="bottom-nav" style="display: none;">
+        <button class="nav-item active" data-target="screen-home" aria-label="Home">
+            <div class="nav-icon-wrap">
+                <i class="fas fa-house"></i>
+                <div class="nav-active-glow"></div>
+            </div>
+            <span class="nav-label">Home</span>
+        </button>
+        <button class="nav-item" data-target="screen-chat" aria-label="Chat">
+            <div class="nav-icon-wrap">
+                <i class="fas fa-comments"></i>
+                <div class="nav-active-glow"></div>
+            </div>
+            <span class="nav-label">Chat</span>
+        </button>
+        <button class="nav-item" data-target="screen-automation" aria-label="Automation">
+            <div class="nav-icon-wrap">
+                <i class="fas fa-wand-magic-sparkles"></i>
+                <div class="nav-active-glow"></div>
+            </div>
+            <span class="nav-label">Auto</span>
+        </button>
+        <button class="nav-item" data-target="screen-tools" aria-label="AI Tools">
+            <div class="nav-icon-wrap">
+                <i class="fas fa-toolbox"></i>
+                <div class="nav-active-glow"></div>
+            </div>
+            <span class="nav-label">Tools</span>
+        </button>
+        <button class="nav-item" data-target="screen-settings" aria-label="Settings">
+            <div class="nav-icon-wrap">
+                <i class="fas fa-gear"></i>
+                <div class="nav-active-glow"></div>
+            </div>
+            <span class="nav-label">Settings</span>
+        </button>
+    </nav>
+
+    <!-- ========== TOOL MODAL (Shared by all tools) ========== -->
+    <div class="tool-modal-overlay" id="tool-modal" style="display:none;">
+        <div class="tool-modal">
+            <div class="tool-modal-header">
+                <h3 class="tool-modal-title" id="tool-modal-title">Tool</h3>
+                <button class="tool-modal-close" id="tool-modal-close"><i class="fas fa-times"></i></button>
+            </div>
+            <div class="tool-modal-body">
+                <textarea class="tool-modal-input" id="tool-modal-input" placeholder="Enter your text..." rows="6"></textarea>
+                <div class="tool-modal-file-area" id="tool-modal-file-area" style="display:none;">
+                    <label for="tool-modal-file" class="tool-file-label">
+                        <i class="fas fa-cloud-arrow-up"></i>
+                        <span>Upload Image</span>
+                    </label>
+                    <input type="file" id="tool-modal-file" accept="image/*" style="display:none;">
+                    <span class="tool-file-name" id="tool-file-name"></span>
+                </div>
+                <input type="text" class="tool-modal-prompt" id="tool-modal-prompt" placeholder="Ask a question about the image..." style="display:none;">
+                <button class="tool-modal-submit" id="tool-modal-submit">
+                    <i class="fas fa-bolt"></i> Generate
+                </button>
+            </div>
+            <div class="tool-modal-result" id="tool-modal-result" style="display:none;">
+                <div class="tool-result-label">RESULT</div>
+                <pre class="tool-result-text" id="tool-result-text"></pre>
+            </div>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
